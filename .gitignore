@@ -6,3 +6,6 @@ PartnerBFF.Application/bin/Debug/net8.0/PartnerBFF.Application.deps.json
 PartnerBFF.Application/bin/
 PartnerBFF.Infrastructure/obj/
 PartnerBFF.Infrastructure/bin/
+PartnerIntegration/.vs/
+PartnerIntegration/bin/
+PartnerIntegration/obj/

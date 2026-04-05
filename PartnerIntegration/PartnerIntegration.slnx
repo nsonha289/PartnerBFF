@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="../PartnerBFF.Application.Test/PartnerBFF.Application.Test.csproj" Id="286f6190-bed9-4885-9ee0-7b0e342062b6" />
+  </Folder>
+  <Project Path="../PartnerBFF.Application/PartnerBFF.Application.csproj" />
+  <Project Path="../PartnerBFF.Infrastructure/PartnerBFF.Infrastructure.csproj" />
+  <Project Path="PartnerBFF.API.csproj" />
+</Solution>
