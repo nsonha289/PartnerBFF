@@ -45,7 +45,7 @@ TransactionService
         │
         ├── IPartnerVerifierService.VerifyPartnerAsync()
         │       └── HTTP call to MockPartnerVerificationController
-        │               └── PartnerVerifierPolicy (Polly retry + circuit breaker)
+        │               └── PartnerVerifierPolicy (Polly retry)
         │                       30% chance TimeoutException → retried up to 3 times
         │
         └── IMessagePublisherBroker.PublishAsync()
