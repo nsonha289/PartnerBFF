@@ -239,7 +239,10 @@ After posting a valid transaction, open the RabbitMQ Management UI at `http://lo
 ---
 
 ## How to Run Tests
-
+First navigate to Test project 
+```bash
+cd .\PartnerBFF.Application.Test\
+```
 ### Run All Tests
 
 ```bash
