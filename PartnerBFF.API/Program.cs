@@ -30,7 +30,6 @@ builder.Services.AddHttpClient<IPartnerVerifierService, PartnerVerifierService>(
        ?? "https://localhost:7050");
 });
 builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<IRequestValidationService<TransactionRequest>, TransactionRequestValidationService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

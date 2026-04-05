@@ -9,3 +9,7 @@ PartnerBFF.Infrastructure/bin/
 PartnerIntegration/.vs/
 PartnerIntegration/bin/
 PartnerIntegration/obj/
+PartnerBFF.API/.vs/
+PartnerBFF.API/bin/
+PartnerBFF.API/obj/PartnerBFF.API.csproj.nuget.g.targets
+PartnerBFF.API/obj/

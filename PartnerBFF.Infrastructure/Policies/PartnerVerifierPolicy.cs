@@ -23,33 +23,5 @@ namespace PartnerBFF.Infrastructure.Policies
                             $"due to: {outcome.Exception?.Message}");
                     });
         }
-
-        public static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
-        {
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .Or<TimeoutException>()
-                .CircuitBreakerAsync(
-                    handledEventsAllowedBeforeBreaking: 3,  // open after 3 failures
-                    durationOfBreak: TimeSpan.FromSeconds(30), // stay open for 30s
-                    onBreak: (outcome, timespan) =>
-                    {
-                        Console.WriteLine(
-                            $"Circuit OPEN for {timespan.TotalSeconds}s " +
-                            $"due to: {outcome.Exception?.Message}");
-                    },
-                    onReset: () => Console.WriteLine("Circuit CLOSED — resuming"),
-                    onHalfOpen: () => Console.WriteLine("Circuit HALF-OPEN — testing")
-                );
-        }
-
-        // Combine both into one pipeline
-        public static IAsyncPolicy<HttpResponseMessage> GetResiliencePolicy()
-        {
-            return Policy.WrapAsync(
-                GetRetryPolicy(),
-                GetCircuitBreakerPolicy()
-            );
-        }
     }
 }

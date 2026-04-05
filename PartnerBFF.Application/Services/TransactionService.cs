@@ -3,7 +3,6 @@ using PartnerBFF.Application.Exceptions;
 using PartnerBFF.Application.Interfaces;
 using PartnerBFF.Application.Models;
 using PartnerBFF.Application.Models.Requests;
-using PartnerBFF.Application.Models.Responses;
 
 namespace PartnerBFF.Application.Services
 {
@@ -11,25 +10,20 @@ namespace PartnerBFF.Application.Services
     {
         private readonly IMessagePublisherBroker _messagePublisherBroker;
         private readonly IPartnerVerifierService _partnerVerifierService;
-        private readonly IRequestValidationService<TransactionRequest> _validator;
         private readonly ILogger<TransactionService> _logger;
 
         public TransactionService(
             IMessagePublisherBroker messagePublisherBroker, 
             IPartnerVerifierService partnerVerifierService,
-            IRequestValidationService<TransactionRequest> validator,
             ILogger<TransactionService> logger)
         {
             _messagePublisherBroker = messagePublisherBroker;
             _partnerVerifierService = partnerVerifierService;
-            _validator = validator;
             _logger = logger;
         }
 
         public async Task<TransactionStatusEnum> ProcessTransaction(TransactionRequest request, CancellationToken cancellationToken)
         {
-            _validator.Validate(request);
-
             if (!await _partnerVerifierService.VerifyPartnerAsync(request.PartnerId))
             {
                 _logger.LogWarning("Invalid partner ID: {PartnerId}", request.PartnerId);
