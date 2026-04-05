@@ -24,10 +24,14 @@
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - RabbitMQ__Host=rabbitmq        # ← use service name, not localhost
+      - PartnerVerification__BaseUrl=http://api:8080
+      - RabbitMQ__Host=rabbitmq
       - RabbitMQ__Port=5672
       - RabbitMQ__Username=guest
       - RabbitMQ__Password=guest
+      - RabbitMQ__ExchangeName=partner.exchange 
+      - RabbitMQ__QueueName=partner.transactions
+      - RabbitMQ__RoutingKey=transactions
     depends_on:
       rabbitmq:
         condition: service_healthy     # ← wait for RabbitMQ to be ready

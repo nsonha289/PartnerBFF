@@ -25,9 +25,11 @@ builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
 builder.Services.AddSingleton<IMessagePublisherBroker, MessagePublisherBroker>();
 builder.Services.AddHttpClient<IPartnerVerifierService, PartnerVerifierService>(client =>
 {
-    client.BaseAddress = new Uri(
-       builder.Configuration["PartnerVerification:BaseUrl"]
-       ?? "https://localhost:7050");
+    var settings = builder.Configuration
+        .GetSection("PartnerVerification")
+        .Get<PartnerVerificationSettings>() ?? throw new Exception("PartnerVerification config base URL is not found");
+
+    client.BaseAddress = new Uri(settings.BaseUrl);
 });
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
