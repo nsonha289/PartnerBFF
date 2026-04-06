@@ -129,7 +129,7 @@ PartnerBFF/
 │   │   ├── RabbitMqPublisher.cs                  ← implements IMessagePublisher
 │   │   └── RabbitMqConnectionFactory.cs
 │   ├── Policies/
-│   │   ├── PartnerVerifierPolicy.cs              ← Polly retry + circuit breaker
+│   │   ├── PartnerVerifierPolicy.cs              ← Polly retry
 │   │   └── RabbitMqRetryPolicy.cs                ← Polly retry for publish failures
 │   └── Configurations/
 │       ├── RabbitMqSettings.cs
