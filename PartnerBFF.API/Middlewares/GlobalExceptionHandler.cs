@@ -44,6 +44,13 @@ namespace PartnerBFF.API.Middlewares
                     Message = ex.Message
                 },
 
+                UnauthorizedAccessException ex => new ErrorResponse
+                {
+                    TraceId = httpContext.TraceIdentifier,
+                    StatusCode = StatusCodes.Status401Unauthorized,
+                    Message = "Unauthorized"
+                },
+
                 // Catch all — never expose internal details
                 _ => new ErrorResponse
                 {
