@@ -162,7 +162,7 @@ This separation avoids circular DI. The broker depends on `IEnumerable<IMessageP
 All request validation lives in custom `ValidationAttribute` classes on `TransactionRequest`. ASP.NET Core model binding runs these automatically before the action executes — `TransactionService` receives a guaranteed-valid object and needs no re-validation logic.
 
 ### 5. Polly Resilience — Two Separate Policies
-- `PartnerVerifierPolicy` — handles `TimeoutException` from the mock verify endpoint with exponential backoff retry (3 attempts: 2s, 4s, 8s) and a circuit breaker that opens after 3 consecutive failures for 30 seconds.
+- `PartnerVerifierPolicy` — handles `TimeoutException` from the mock verify endpoint with exponential backoff retry (3 attempts: 2s, 4s, 8s).
 - `RabbitMqRetryPolicy` — handles transient RabbitMQ publish failures with exponential backoff retry (3 attempts).
 
 ### 6. Global Exception Handler
