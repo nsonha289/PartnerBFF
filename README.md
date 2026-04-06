@@ -13,6 +13,7 @@ A .NET 8 Backend-for-Frontend (BFF) microservice that receives incoming transact
 - [How to Run](#how-to-run)
 - [How to Run Tests](#how-to-run-tests)
 - [API Reference](#api-reference)
+- [Security](#security)
 - [Configuration](#configuration)
 
 ---
@@ -341,7 +342,84 @@ Accepts a partner transaction, verifies the partner identity, and queues the tra
   "timestamp": "2024-05-10T14:30:00Z"
 }
 ```
-
+---
+ 
+## Security
+ 
+The API is secured using **API Key authentication**. Only partners whose key is registered in configuration can access the endpoint.
+ 
+### How It Works
+ 
+Each partner is issued a unique API key. Every request must include it in the `X-Api-Key` header. The `ApiKeyAuthenticationHandler` validates the key against the registered list and builds a `ClaimsPrincipal` containing the `partnerId` — which is then used to prevent a partner from submitting on behalf of another.
+ 
+```
+Request + X-Api-Key header
+        │
+        ▼
+ApiKeyAuthenticationHandler
+        │
+        ├── header missing?      → 401 Unauthorized
+        ├── key not in config?   → 401 Unauthorized
+        └── key valid?           → authenticated as partnerId → request proceeds
+                │
+                ▼
+        Controller claim check
+                │
+                ├── request.PartnerId != authenticated PartnerId → 403 Forbidden
+                └── match ✅ → TransactionService
+```
+ 
+### Two Layers of Protection
+ 
+| Layer | Check | Failure |
+|---|---|---|
+| Authentication | Is the API key registered? | `401 Unauthorized` |
+| Authorization | Does `partnerId` match the key owner? | `403 Forbidden` |
+ 
+### Calling the API
+ 
+Include the `X-Api-Key` header in every request:
+ 
+```http
+POST /api/v1/partner/transactions
+X-Api-Key: abc123secret
+Content-Type: application/json
+ 
+{
+  "partnerId": "P-1001",
+  ...
+}
+```
+ 
+### Swagger UI
+ 
+Click the **Authorize** button at the top of the Swagger UI, enter your API key and all subsequent requests will include the header automatically.
+ 
+```
+🔒 Authorize
+──────────────────────────
+X-Api-Key (apiKey)
+Name: X-Api-Key  |  In: header
+ 
+Value: [________________________]
+ 
+[ Authorize ]  [ Close ]
+```
+ 
+### Managing Partner Access
+ 
+**Add a new partner** — add their key to config, no code changes needed:
+ 
+```json
+{
+  "ApiKey": {
+    "Keys": {
+      "abc123secret": "P-1001",
+      "xyz789secret": "P-1002"
+    }
+  }
+}
+```
 ---
 
 ## Configuration
